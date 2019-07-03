@@ -1,0 +1,29 @@
+{
+  "name": "magmacanvasexamples",
+  "version": "1.0.0",
+  "description": "Examples applications of MagmaCanvas.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andrewnetwork/MagmaCanvasExamples.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Andrewnetwork/MagmaCanvasExamples/issues"
+  },
+  "homepage": "https://github.com/Andrewnetwork/MagmaCanvasExamples#readme",
+  "devDependencies": {
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.2",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "dependencies": {}
+}
