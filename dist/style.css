@@ -6,3 +6,8 @@
 #canvasContainer{
     text-align: center;
 }
+#objectView{
+    float: left;
+    border:solid medium black;
+    background-color: dimgrey;
+}

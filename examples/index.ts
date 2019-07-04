@@ -1,25 +1,28 @@
 import { Point,Line,Circle,Shapes,Polygon,MagmaCanvas,Animator } from "magma-canvas";
 import {graph} from "./graph";
+import {cutExample} from "./cut";
 
 function start(){
     //animationExample(ex2);
-    //cutExample();
+    cutExample();
     //follow();
     //circleSim();
     //graph();
-    editRect();
+    //editRect();
+    //randomDraw();
+   
 }
-
 function editRect(){
     const canvasDim  = 800;
     const mCanvas    = new MagmaCanvas("canvasContainer",canvasDim,canvasDim,true);
+    /*
     let rect         = Shapes.makeRect(canvasDim/4,canvasDim/4,canvasDim/2,canvasDim/2); 
     mCanvas.add(rect);
     rect.points.forEach((point)=>{
         let p = Shapes.makeRect(point.x-10,point.y-10,20,20);
         p.fillColor = "grey";
         mCanvas.add(p);
-    });
+    });*/
 
 }
 function circleSim(){
@@ -58,7 +61,7 @@ function circleSim(){
 function randomDraw(){
     const canvasDim  = 800
     const mCanvas    = new MagmaCanvas("canvasContainer",canvasDim,canvasDim,true,false);
-    const maxPoints = 1000;
+    const maxPoints = 10;
     const nPoly = 3;
     let polys:Polygon[] = [];
     let randFn = ()=> Math.random()*canvasDim;
@@ -115,38 +118,6 @@ function weird(){
             mCanvas.remove(polygonHandler);
         }
         polygonHandler = mCanvas.add(new Polygon([{x:pos.x,y:pos.y},{x:pos.x+500,y:pos.y},{x:pos.y,y:pos.x+500}]));
-    });
-}
-function cutExample(){
-    let points : Point[]          = [];
-    let lines  : Line[]           = [];
-    let guideLineID : number      = null;
-    let pointHandlers : number [] = [];
-    const canvasDim               = 800
-    const mCanvas                 = new MagmaCanvas("canvasContainer",canvasDim,canvasDim,true);
-    let plane                     = Shapes.makeRect(canvasDim/4,canvasDim/4,canvasDim/2,canvasDim/2);
-    let planeHandler              = mCanvas.add(plane);
-
-    mCanvas.addEventListener("click",(_,pos)=>{
-        pointHandlers.push(mCanvas.add(new Circle(pos,10)));
-        points.push(pos);
-        if(points.length == 2){
-            let line = new Line(points[0],points[1]);
-            mCanvas.add(line);
-            lines.push(line);
-            points = [];
-            mCanvas.removeList(pointHandlers);
-            mCanvas.remove(planeHandler);
-            mCanvas.addList(plane.splitBy(line));
-        }
-    });
-    mCanvas.addEventListener("mousemove",(_,pos)=>{
-        if(points.length == 1){
-            if(guideLineID != null){
-                mCanvas.remove(guideLineID);
-            }
-            guideLineID = mCanvas.add(new Line(points[0],pos));
-        }
     });
 }
 function animationExample(exFn:(a:number,b:Animator,c:MagmaCanvas)=>void){
