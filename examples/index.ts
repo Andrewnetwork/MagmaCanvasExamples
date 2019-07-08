@@ -1,6 +1,6 @@
 import { Point,Line,Circle,Shapes,Polygon,MagmaCanvas,Animator } from "magma-canvas";
 import {graph} from "./graph";
-import {cutExample} from "./cut";
+import {cutExample,randomCuts} from "./cut";
 
 function start(){
     //animationExample(ex2);
@@ -10,6 +10,7 @@ function start(){
     //graph();
     //editRect();
     //randomDraw();
+    //randomCuts();
    
 }
 function editRect(){
