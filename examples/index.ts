@@ -1,17 +1,30 @@
 import { Point,Line,Circle,Shapes,Polygon,MagmaCanvas,Animator } from "magma-canvas";
 import {graph} from "./graph";
-import {cutExample,randomCuts} from "./cut";
+import {cutExample,randomCuts,dragCut} from "./cut";
+import {axesTransformShapes} from "./axesTransformShapes";
+import {orthLine,randOrthLines} from "./orthLine";
+import {pointOfIntersection} from "./lines";
+import {buttonTest, formTest} from "./canvasObjects";
+import {shooter,rippleCursor} from "./ripple";
 
 function start(){
     //animationExample(ex2);
-    cutExample();
+    //cutExample();
     //follow();
     //circleSim();
-    //graph();
+    //graph((x:number)=>Math.cos(x));
     //editRect();
     //randomDraw();
     //randomCuts();
-   
+    //axesTransformShapes(3);
+    //orthLine();
+    //randOrthLines();
+    //pointOfIntersection();
+    //dragCut();  
+    //buttonTest();
+    //formTest();
+    //rippleCursor();
+    shooter();
 }
 function editRect(){
     const canvasDim  = 800;
@@ -35,14 +48,14 @@ function circleSim(){
         let a = 9.8;
         let t = 0;
         let iHandler = setInterval(()=>{
-            if(circ.pos.y + 10 <= 800){
-                circ.pos.y += (a*Math.sin(t**2))/2;
+            let center = <Point>circ.center();
+            if(center.y + 10 <= 800){
+                center.y += (a*Math.sin(t**2))/2;
                 t+=0.01;
             }else{
-                circ.pos.y = 790;
+                center.y = 790;
                 clearInterval(iHandler);
             }
-          
         },0);
     }
     let ignoreCounter = 0;
@@ -72,7 +85,7 @@ function randomDraw(){
         for(let j = 0; j < nPoints; j++){
             points.push({x:randFn(),y:randFn()});
         }
-        let poly = new Polygon(points,`rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.random()})`);
+        let poly = new Polygon(points,true,`rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.random()})`);
         polys.push(poly);
         mCanvas.add(poly);
     }
