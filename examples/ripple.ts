@@ -61,6 +61,13 @@ export function colors(){
         makeRipple({x:Math.random()*canvasDim,y:Math.random()*canvasDim},mCanvas,7);
     },0);
 }
+function randNum(){
+    if(Math.random()<=0.5){
+        return -Math.random()*10;
+    }else{
+        return Math.random()*10;
+    }
+}
 function shoot(pos:Point,targetPos:Point,targetRings:Circle[],mCanvas:MagmaCanvas,delay=0,ringEffect=true){
     let prevHandler : number = null;
     const radius_start = 400;
@@ -74,12 +81,12 @@ function shoot(pos:Point,targetPos:Point,targetRings:Circle[],mCanvas:MagmaCanva
         }
         radius-=radius_start/(delay/interval_time);
         if( radius <= minRadius){
-            let psn : Point | PointFn = pos
+            let psn : Point | PointFn = pos;
             let color = "red"
             if(targetRings.map((ring)=>ring.contains(pos)).reduce((a,b)=>a||b)){
-                let x = pos.x - targetPos.x;
-                let y = pos.y - targetPos.y;
-                psn = () => {return {x:targetPos.x+x,y:targetPos.y+y}};
+                let x = pos.x - targetRings[0].center().x;
+                let y = pos.y - targetRings[0].center().y;
+                psn = () => {return {x:targetRings[0].center().x+x,y:targetRings[0].center().y+y}};
                 color = "green";
             }
             mCanvas.add(new Circle(psn,minRadius,true,color));
@@ -87,6 +94,7 @@ function shoot(pos:Point,targetPos:Point,targetRings:Circle[],mCanvas:MagmaCanva
         }
         else{
             if(ringEffect){
+                pos = {x:pos.x+randNum(),y:pos.y+randNum()};
                 prevHandler = mCanvas.add(new Circle(pos,radius,true,"rgba(0,0,0,0.5)"));
             }
         }
@@ -94,28 +102,32 @@ function shoot(pos:Point,targetPos:Point,targetRings:Circle[],mCanvas:MagmaCanva
 }
 export function shooter(){
     const canvasDim = 800; 
-    const mCanvas   = new MagmaCanvas("canvasContainer",canvasDim,canvasDim,true);
+    const mCanvas   = new MagmaCanvas("canvasContainer",canvasDim,canvasDim,false);
     let targetPos   = {x:canvasDim/2,y:canvasDim/2}
     let goRight = true;
     let targetRings = addTarget(mCanvas,targetPos);
 
     setInterval(()=>{
-        if(targetPos.x > canvasDim || targetPos.x < 0){
+        if(targetRings[0].center().x > canvasDim || targetRings[0].center().x < 0){
             goRight = !goRight;
         }
         if(goRight){
-            targetPos.x++;
-            targetPos.y = targetPos.y+Math.cos(targetPos.x/100);
+            targetRings.forEach((ring)=>{
+                ring.center({x:ring.center().x+1,
+                    y:ring.center().y+Math.cos(ring.center().x/100)});
+            });
         }else{
-            targetPos.x--;
-            targetPos.y = targetPos.y-Math.cos(targetPos.x/100);
+            targetRings.forEach((ring)=>{
+                ring.center({x:ring.center().x-1,
+                    y:ring.center().y-Math.cos(ring.center().x/100)});
+            });
         } 
     },10);
 
-    setInterval(()=>{
-        shoot({x:targetPos.x,y:targetPos.y},targetPos,targetRings,mCanvas,9000,false);
-    },10);
-    // mCanvas.addEventListener("click",(e: MouseEvent, pos: Point)=>{
-    //     shoot(pos,targetPos,targetRings,mCanvas,10000,true);
-    // });
+    // setInterval(()=>{
+    //     shoot({x:Math.random()*800,y:Math.random()*800},targetPos,targetRings,mCanvas,1000,false);
+    // },0);
+    mCanvas.addEventListener("click",(e: MouseEvent, pos: Point)=>{
+        shoot(pos,targetPos,targetRings,mCanvas,10000,true);
+    });
 }
