@@ -1,18 +1,26 @@
-import { Point,Line,Circle,Shapes,Polygon,MagmaCanvas,Animator } from "magma-canvas";
-import {graph} from "./graph";
+import { Point,Line,Circle,Shapes,Polygon,MagmaCanvas,Animator, Target } from "magma-canvas";
+import {graph, plot} from "./graph";
 import {cutExample,randomCuts,dragCut} from "./cut";
 import {axesTransformShapes} from "./axesTransformShapes";
 import {orthLine,randOrthLines} from "./orthLine";
 import {pointOfIntersection} from "./lines";
 import {buttonTest, formTest} from "./canvasObjects";
-import {shooter,rippleCursor} from "./ripple";
+import {rippleCursor} from "./ripple";
+import {bubbles} from "./opacityTricks";
+import {shooter,shootingSimulator, SimulationResult, plotSim, simResultDisplay, targetMotion, shotFunction} from "./shooter";
+import { pivotAnimation } from "./pivotAnimation";
+import { string } from "prop-types";
+
+let select = document.createElement("select");
+let selected_events = new Map<string, Function>();
 
 function start(){
+    document.getElementById("exampleSelection").appendChild(select);
     //animationExample(ex2);
     //cutExample();
     //follow();
     //circleSim();
-    //graph((x:number)=>Math.cos(x));
+    //graph();
     //editRect();
     //randomDraw();
     //randomCuts();
@@ -24,8 +32,39 @@ function start(){
     //buttonTest();
     //formTest();
     //rippleCursor();
-    shooter();
+    //shooter();
+    //bubbles();
+    //plot();
+    //smoke();
+    // let trials = [];
+    // for(let i = 0; i<1000; i++){
+    //     trials.push(shootingSimulator(targetMotion,shotFunction,{x:400,y:400},1000,0,false));
+    // }
+    // console.log(trials);
+    // let nShots = 10000;
+    // shootingSimulator(targetMotion,shotFunction,{x:400,y:400},nShots,0,true)
+    //     .then((results:SimulationResult)=>simResultDisplay(results,nShots));
+    add_option("Pivot Animation", pivotAnimation);
+    add_option("Bubbles", bubbles);
+
+    selected_events.get("Pivot Animation")();
+    select.value = "Pivot Animation";
+    select.onchange = () => {
+        document.getElementById("canvasContainer").innerHTML = "";
+        selected_events.get(select.value)();
+    }
 }
+
+function add_option(caption:string, fn:Function){
+    let option = document.createElement("option");
+    option.innerHTML = caption;
+    option.value = caption;
+    select.add(option);
+    selected_events.set(caption, fn);
+}
+
+
+
 function editRect(){
     const canvasDim  = 800;
     const mCanvas    = new MagmaCanvas("canvasContainer",canvasDim,canvasDim,true);

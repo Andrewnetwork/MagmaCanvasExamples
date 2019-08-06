@@ -65,10 +65,10 @@ export function dragCut(){
     let planeHandler              = mCanvas.add(plane);
     plane.points.forEach((point)=>{
         let circ = new Circle(point,10);
-        mCanvas.add(circ,"mousemove",(_,pos)=>{
+        mCanvas.addEventListener("mousemove",(_:MouseEvent,pos:Point)=>{
             circ.center(pos);
             plane.points[0] = pos;
-        });
+        },mCanvas.add(circ));
     });
 
 }
