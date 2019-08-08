@@ -1,5 +1,4 @@
 import { Point,Line,Circle,Shapes,Polygon,MagmaCanvas,Animator, Target } from "magma-canvas";
-import {graph, plot} from "./graph";
 import {cutExample,randomCuts,dragCut} from "./cut";
 import {axesTransformShapes} from "./axesTransformShapes";
 import {orthLine,randOrthLines} from "./orthLine";
@@ -7,9 +6,8 @@ import {pointOfIntersection} from "./lines";
 import {buttonTest, formTest} from "./canvasObjects";
 import {rippleCursor} from "./ripple";
 import {bubbles} from "./opacityTricks";
-import {shooter,shootingSimulator, SimulationResult, plotSim, simResultDisplay, targetMotion, shotFunction} from "./shooter";
 import { pivotAnimation } from "./pivotAnimation";
-import { string } from "prop-types";
+import {cellular_automata, cellular_automata_2D} from"./cellular_automata";
 
 let select = document.createElement("select");
 let selected_events = new Map<string, Function>();
@@ -46,9 +44,11 @@ function start(){
     //     .then((results:SimulationResult)=>simResultDisplay(results,nShots));
     add_option("Pivot Animation", pivotAnimation);
     add_option("Bubbles", bubbles);
+    add_option("Cellular Automata", cellular_automata);
+    add_option("Cellular Automata 2D", cellular_automata_2D);
 
-    selected_events.get("Pivot Animation")();
-    select.value = "Pivot Animation";
+    selected_events.get("Cellular Automata 2D")();
+    select.value = "Cellular Automata 2D";
     select.onchange = () => {
         document.getElementById("canvasContainer").innerHTML = "";
         selected_events.get(select.value)();

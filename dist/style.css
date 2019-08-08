@@ -13,4 +13,10 @@
     background-color: dimgrey;
 }
 #exampleSelection{
+    visibility: hidden;
+}
+#ruleNo{
+    text-align: center;
+    width: 100%;
+    font-size: 100px;
 }
